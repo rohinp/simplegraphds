@@ -8,6 +8,8 @@ interface INode<T> {
     INode<T> getChildByID(String nodeId);
     boolean contains(INode<T> INode);
     T getData();
-    List<INode> getChildren();
+    List<INode<T>> getChildren();
     String id();
+    List<INode<T>> getLeafs();
+    boolean haveChildren();
 }

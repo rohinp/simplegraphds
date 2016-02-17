@@ -69,13 +69,23 @@ class Node  {
         }
 
         @Override
-        public List<INode> getChildren() {
+        public List<INode<T>> getChildren() {
             return new ArrayList<>();
         }
 
         @Override
         public String id() {
             return nodeId;
+        }
+
+        @Override
+        public List<INode<T>> getLeafs() {
+            return new ArrayList<>();
+        }
+
+        @Override
+        public boolean haveChildren() {
+            return false;
         }
 
         @Override
@@ -88,7 +98,7 @@ class Node  {
 
         private final String nodeId;
         private final T data;
-        private final List<INode> children = new ArrayList<>();
+        private final List<INode<T>> children = new ArrayList<>();
 
         public NodeWithChildren(INode<T> parent, INode<T> child) {
             nodeId = parent.id();
@@ -144,13 +154,34 @@ class Node  {
         }
 
         @Override
-        public List<INode> getChildren() {
+        public List<INode<T>> getChildren() {
             return children;
         }
 
         @Override
         public String id() {
             return nodeId;
+        }
+
+        @Override
+        public List<INode<T>> getLeafs() {
+            return traverseForLeaf(this,new ArrayList<>());
+        }
+
+        @Override
+        public boolean haveChildren() {
+            return true;
+        }
+
+        private List<INode<T>> traverseForLeaf(INode<T> node, List<INode<T>> acc){
+            int index = 0;
+            if(node.haveChildren()){
+                if(!node.getChildByIndex(index).haveChildren()) {
+                    acc.add(node.getChildByIndex(index++));
+                }
+               return traverseForLeaf(node.getChildByIndex(index),acc);
+            }
+            return acc;
         }
 
         @Override

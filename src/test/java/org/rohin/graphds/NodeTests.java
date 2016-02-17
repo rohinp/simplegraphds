@@ -2,6 +2,8 @@ package org.rohin.graphds;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class NodeTests {
@@ -143,6 +145,31 @@ public class NodeTests {
         //then
     }
 
+    @Test
+    public void itShouldGetAllLeafNodes(){
+        //given
+        INode<String> root = Node.createNode("root","root");
+
+        INode<String> child1 = Node.createNode("child1","child1");
+        INode<String> leaf1 = Node.createNode("leaf1","leaf1");
+
+        INode<String> child2 = Node.createNode("child2","child2");
+        INode<String> leaf2 = Node.createNode("leaf2","leaf2");
+
+        child1 = child1.addChild(leaf1);
+        child2 = child2.addChild(leaf2);
+
+        root = root.addChild(child1);
+        root = root.addChild(child2);
+
+        INode<String>[] expecteds = new INode[]{leaf1, leaf2};
+        //when
+        List<INode<String>> leafs = root.getLeafs();
+
+        //then
+        assertArrayEquals(expecteds,leafs.toArray());
+
+    }
 
 
 }
