@@ -162,12 +162,12 @@ public class NodeTests {
         root = root.addChild(child1);
         root = root.addChild(child2);
 
-        INode<String>[] expecteds = new INode[]{leaf1, leaf2};
+        INode<String>[] expected = new INode[]{leaf1, leaf2};
         //when
-        List<INode<String>> leafs = root.getLeafs();
+        List<INode<String>> actual = root.getLeafs();
 
         //then
-        assertArrayEquals(expecteds,leafs.toArray());
+        assertArrayEquals(expected,actual.toArray());
 
     }
 

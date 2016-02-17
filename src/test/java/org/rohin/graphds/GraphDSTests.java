@@ -1,7 +1,8 @@
 package org.rohin.graphds;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class GraphDSTests {
 
@@ -24,8 +25,8 @@ public class GraphDSTests {
         graph.addChildNode("root1","child1","data");
 
         //then
-        Assert.assertEquals(graph.getRoot().get(0).id(),"root1");
-        Assert.assertEquals(graph.getChildOf("root1").get(0).id(),"child1");
+        assertEquals(graph.getRoot().get(0).id(),"root1");
+        assertEquals(graph.getChildOf("root1").get(0).id(),"child1");
 
     }
 }

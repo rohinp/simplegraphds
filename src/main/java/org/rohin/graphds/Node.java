@@ -100,6 +100,8 @@ class Node  {
         private final T data;
         private final List<INode<T>> children = new ArrayList<>();
 
+        private List<INode<T>> acc = new ArrayList<>();
+
         public NodeWithChildren(INode<T> parent, INode<T> child) {
             nodeId = parent.id();
             data = parent.getData();
@@ -165,7 +167,9 @@ class Node  {
 
         @Override
         public List<INode<T>> getLeafs() {
-            return traverseForLeaf(this,new ArrayList<>());
+            acc = new ArrayList<>();
+            loopForLeaf(this);
+            return acc;
         }
 
         @Override
@@ -173,15 +177,11 @@ class Node  {
             return true;
         }
 
-        private List<INode<T>> traverseForLeaf(INode<T> node, List<INode<T>> acc){
-            int index = 0;
-            if(node.haveChildren()){
-                if(!node.getChildByIndex(index).haveChildren()) {
-                    acc.add(node.getChildByIndex(index++));
-                }
-               return traverseForLeaf(node.getChildByIndex(index),acc);
-            }
-            return acc;
+        private void loopForLeaf(INode<T> node){
+            if(node.haveChildren())
+                node.getChildren().stream().forEach(this::loopForLeaf);
+            else
+                acc.add(node);
         }
 
         @Override
