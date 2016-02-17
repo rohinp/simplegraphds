@@ -33,9 +33,7 @@ class Node  {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            return nodeId.equals(((NodeWithoutChildren<?>) o).nodeId);
+            return this == o || !(o == null || getClass() != o.getClass()) && nodeId.equals(((NodeWithoutChildren<?>) o).nodeId);
         }
 
         @Override
@@ -139,9 +137,7 @@ class Node  {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            return nodeId.equals(((NodeWithChildren<?>) o).nodeId);
+            return this == o || !(o == null || getClass() != o.getClass()) && nodeId.equals(((NodeWithChildren<?>) o).nodeId);
 
         }
 
@@ -186,7 +182,7 @@ class Node  {
 
         @Override
         public String toString() {
-            return nodeId + " --> [ " + children.stream().map(e -> e.toString()).reduce( (e,a) -> a += " , "+e).get() + " ]";
+            return nodeId + " --> [ " + children.stream().map(Object::toString).reduce( (e, a) -> a += " , "+e).get() + " ]";
         }
     }
 
