@@ -9,7 +9,7 @@ public interface IGraph<T> {
 
     void addChildNode(String parentNodeId, String childNodeId, T data);
 
-    List<INode<T>> getRoot();
+    List<INode<T>> getRoots();
 
     List<INode<T>> getChildOf(String parentNodeId);
 }

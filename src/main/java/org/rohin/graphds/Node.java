@@ -2,6 +2,7 @@ package org.rohin.graphds;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 class Node  {
 
@@ -47,13 +48,13 @@ class Node  {
         }
 
         @Override
-        public INode<T> getChildByIndex(int index) {
-            throw new EmptyChildrenListException();
+        public Optional<INode<T>> getChildByIndex(int index) {
+            return Optional.empty();
         }
 
         @Override
-        public INode<T> getChildByID(String nodeId) {
-            throw new EmptyChildrenListException();
+        public Optional<INode<T>> getChildByID(String nodeId) {
+            return Optional.empty();
         }
 
         @Override
@@ -113,10 +114,10 @@ class Node  {
         }
 
         @Override
-        public INode<T> getChildByIndex(int index) {
+        public Optional<INode<T>> getChildByIndex(int index) {
             if (isInRange(index))
-                return children.get(index);
-            throw new InvalidIndexException();
+                return Optional.of(children.get(index));
+            return Optional.empty();
         }
 
         private boolean isInRange(int index) {
@@ -124,10 +125,10 @@ class Node  {
         }
 
         @Override
-        public INode<T> getChildByID(String id) {
+        public Optional<INode<T>> getChildByID(String id) {
             if(children.stream().anyMatch(e -> e.id().equals(id)))
-                return children.stream().filter(e -> e.id().equals(id)).findFirst().get();
-            throw new InvalidNodeIDException();
+                return children.stream().filter(e -> e.id().equals(id)).findFirst();
+            return Optional.empty();
         }
 
         @Override
@@ -184,15 +185,6 @@ class Node  {
         public String toString() {
             return nodeId + " --> [ " + children.stream().map(Object::toString).reduce( (e, a) -> a += " , "+e).get() + " ]";
         }
-    }
-
-    public static class EmptyChildrenListException extends RuntimeException{
-    }
-
-    public static class InvalidIndexException extends RuntimeException{
-    }
-
-    public static class InvalidNodeIDException extends RuntimeException{
     }
 
     public static class NoDuplicateChildAllowed extends RuntimeException{

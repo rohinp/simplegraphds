@@ -27,7 +27,7 @@ public class Graph {
         }
 
         @Override
-        public List<INode<T>> getRoot() {
+        public List<INode<T>> getRoots() {
             return null;
         }
 

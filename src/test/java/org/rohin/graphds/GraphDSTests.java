@@ -25,7 +25,7 @@ public class GraphDSTests {
         graph.addChildNode("root1","child1","data");
 
         //then
-        assertEquals(graph.getRoot().get(0).id(),"root1");
+        assertEquals(graph.getRoots().get(0).id(),"root1");
         assertEquals(graph.getChildOf("root1").get(0).id(),"child1");
 
     }

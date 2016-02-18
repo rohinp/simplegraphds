@@ -3,62 +3,63 @@ package org.rohin.graphds;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
 public class NodeTests {
 
-    @Test(expected = Node.EmptyChildrenListException.class)
+    @Test
     public void itShouldNotAllowEmptyChildListToAccess_ByIndex(){
         //given
         INode<String> node = Node.createNode("root","d");
 
         //when
-        node.getChildByIndex(0);
+        assertEquals(Optional.empty(),node.getChildByIndex(0));
         //then
     }
 
-    @Test(expected = Node.InvalidNodeIDException.class)
-    public void itShouldGiveExceptionForInvalidChildName(){
+    @Test
+    public void itShouldGiveEmptyForInvalidChildName(){
         //given
         INode<String> node = Node.createNode("root","root");
         node = node.addChild(Node.createNode("child","c"));
 
         //when
-        node.getChildByID("someName");
+        assertEquals(Optional.empty(),node.getChildByID("someName"));
         //then
     }
 
-    @Test(expected = Node.InvalidIndexException.class)
-    public void itShouldGiveExceptionForInvalidChildIndex(){
+    @Test
+    public void itShouldGiveEmptyForInvalidChildIndex(){
         //given
         INode<String> node = Node.createNode("root","d");
         node = node.addChild(Node.createNode("child","c"));
 
         //when
-        node.getChildByIndex(1);
+        assertEquals(Optional.empty(),node.getChildByIndex(1));
         //then
     }
 
-    @Test(expected = Node.InvalidIndexException.class)
-    public void itShouldGiveExceptionForInvalidNegativeChildIndex(){
+    @Test
+    public void itShouldGiveEmptyForInvalidNegativeChildIndex(){
         //given
         INode<String> node = Node.createNode("root","d");
         node = node.addChild(Node.createNode("child","c"));
 
         //when
-        node.getChildByIndex(-1);
+        assertEquals(Optional.empty(),node.getChildByIndex(-1));
         //then
     }
 
 
-    @Test(expected = Node.EmptyChildrenListException.class)
+    @Test
     public void itShouldNotAllowEmptyChildListToAccess_ByName(){
         //given
         INode<String> node = Node.createNode("root","root");
 
         //when
-        node.getChildByID("someName");
+        assertEquals(Optional.empty(),node.getChildByID("someName"));
         //then
     }
 
@@ -74,9 +75,9 @@ public class NodeTests {
 
         //then
 
-        assertEquals(nodeDS.getChildByIndex(0), Node.createNode("1","c"));
-        assertEquals(nodeDS.getChildByIndex(1), Node.createNode("2","c"));
-        assertEquals(nodeDS.getChildByIndex(2), Node.createNode("3","c"));
+        assertEquals(nodeDS.getChildByIndex(0).get(), Node.createNode("1","c"));
+        assertEquals(nodeDS.getChildByIndex(1).get(), Node.createNode("2","c"));
+        assertEquals(nodeDS.getChildByIndex(2).get(), Node.createNode("3","c"));
     }
 
     @Test
@@ -91,9 +92,9 @@ public class NodeTests {
         System.out.println(nodeDS);
         //then
 
-        assertEquals(nodeDS.getChildByID("1"), Node.createNode("1","c"));
-        assertEquals(nodeDS.getChildByID("2"), Node.createNode("2","c"));
-        assertEquals(nodeDS.getChildByID("3"), Node.createNode("3","c"));
+        assertEquals(nodeDS.getChildByID("1").get(), Node.createNode("1","c"));
+        assertEquals(nodeDS.getChildByID("2").get(), Node.createNode("2","c"));
+        assertEquals(nodeDS.getChildByID("3").get(), Node.createNode("3","c"));
     }
 
     @Test
