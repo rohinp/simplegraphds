@@ -126,9 +126,7 @@ class Node  {
 
         @Override
         public Optional<INode<T>> getChildByID(String id) {
-            if(children.stream().anyMatch(e -> e.id().equals(id)))
                 return children.stream().filter(e -> e.id().equals(id)).findFirst();
-            return Optional.empty();
         }
 
         @Override

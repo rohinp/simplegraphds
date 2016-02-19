@@ -147,6 +147,20 @@ public class NodeTests {
     }
 
     @Test
+    public void itShouldGetNoLeafForNoLeafNodes(){
+        //given
+        INode<String> root = Node.createNode("root","root");
+
+        INode[] expected = new INode[]{};
+        //when
+        List<INode<String>> actual = root.getLeafs();
+
+        //then
+        assertArrayEquals(expected,actual.toArray());
+
+    }
+
+    @Test
     public void itShouldGetAllLeafNodes(){
         //given
         INode<String> root = Node.createNode("root","root");
@@ -163,7 +177,7 @@ public class NodeTests {
         root = root.addChild(child1);
         root = root.addChild(child2);
 
-        INode<String>[] expected = new INode[]{leaf1, leaf2};
+        INode[] expected = new INode[]{leaf1, leaf2};
         //when
         List<INode<String>> actual = root.getLeafs();
 
