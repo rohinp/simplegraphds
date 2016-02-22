@@ -13,4 +13,6 @@ interface INode<T> {
     String id();
     List<INode<T>> getLeafs();
     boolean haveChildren();
+    String getTag();
+    String getDescription();
 }

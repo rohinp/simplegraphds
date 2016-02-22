@@ -6,30 +6,19 @@ import java.util.Optional;
 
 class Node  {
 
-    public static <T> INode<T> createNode(String nodeId, T data){
-        return new NodeWithoutChildren<>(nodeId, data);
-    }
-
-    private static <T> INode<T> createNodeWithChildren(INode<T> parent, INode<T> child){
-        validate(parent, child);
-        return new NodeWithChildren<>(parent,child);
-    }
-
-    private static <T> void validate(INode<T> parent, INode<T> child) {
-        if(parent.contains(child))
-            throw new NoDuplicateChildAllowed();
-        if(parent.equals(child))
-            throw new RootAndChildNodeSameNameException();
-    }
-
     private static class NodeWithoutChildren<T> implements INode<T> {
 
         private final String nodeId;
         private final T data;
+        private final String tag;
+        private final String description;
 
-        private NodeWithoutChildren(String nodeId, T data) {
+
+        public NodeWithoutChildren(String nodeId, T data, String tag, String description) {
             this.nodeId = nodeId;
             this.data = data;
+            this.tag = tag;
+            this.description = description;
         }
 
         @Override
@@ -88,6 +77,16 @@ class Node  {
         }
 
         @Override
+        public String getTag() {
+            return tag;
+        }
+
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
         public String toString() {
             return nodeId ;
         }
@@ -99,6 +98,9 @@ class Node  {
         private final T data;
         private final List<INode<T>> children = new ArrayList<>();
 
+        private final String tag;
+        private final String description;
+
         private List<INode<T>> acc = new ArrayList<>();
 
         public NodeWithChildren(INode<T> parent, INode<T> child) {
@@ -106,6 +108,8 @@ class Node  {
             data = parent.getData();
             children.addAll(parent.getChildren());
             children.add(child);
+            this.tag = parent.getTag();
+            this.description = parent.getDescription();
         }
 
         @Override
@@ -172,6 +176,16 @@ class Node  {
             return true;
         }
 
+        @Override
+        public String getTag() {
+            return tag;
+        }
+
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
         private void loopForLeaf(INode<T> node){
             if(node.haveChildren())
                 node.getChildren().stream().forEach(this::loopForLeaf);
@@ -185,9 +199,50 @@ class Node  {
         }
     }
 
-    public static class NoDuplicateChildAllowed extends RuntimeException{
+    private static <T> INode<T> createNodeWithChildren(INode<T> parent, INode<T> child){
+        validate(parent, child);
+        return new NodeWithChildren<>(parent,child);
     }
 
-    public static class RootAndChildNodeSameNameException extends RuntimeException{
+    private static <T> void validate(INode<T> parent, INode<T> child) {
+        if(parent.contains(child))
+            throw new NoDuplicateChildAllowed();
+        if(parent.equals(child))
+            throw new RootAndChildNodeSameNameException();
+    }
+
+    static class Builder<T> {
+        //required
+        private final String nodeId;
+        private final T data;
+
+        //optional
+        private String tag = "";
+        private String description = "";
+
+        public Builder(String nodeId, T data) {
+            this.nodeId = nodeId;
+            this.data = data;
+        }
+
+        public Builder<T> tag(String tag) {
+            this.tag = tag;
+            return this;
+        }
+
+        public Builder<T> description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public INode<T> build() {
+            return new NodeWithoutChildren<>(nodeId, data, tag,description);
+        }
+    }
+
+    static class NoDuplicateChildAllowed extends RuntimeException{
+    }
+
+    static class RootAndChildNodeSameNameException extends RuntimeException{
     }
 }

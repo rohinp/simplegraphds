@@ -12,7 +12,7 @@ public class NodeTests {
     @Test
     public void itShouldNotAllowEmptyChildListToAccess_ByIndex(){
         //given
-        INode<String> node = Node.createNode("root","d");
+        INode<String> node = new Node.Builder("root","d").build();
 
         //when
         assertEquals(Optional.empty(),node.getChildByIndex(0));
@@ -22,8 +22,8 @@ public class NodeTests {
     @Test
     public void itShouldGiveEmptyForInvalidChildName(){
         //given
-        INode<String> node = Node.createNode("root","root");
-        node = node.addChild(Node.createNode("child","c"));
+        INode<String> node = new Node.Builder("root","root").build();
+        node = node.addChild(new Node.Builder("child","c").build());
 
         //when
         assertEquals(Optional.empty(),node.getChildByID("someName"));
@@ -33,8 +33,8 @@ public class NodeTests {
     @Test
     public void itShouldGiveEmptyForInvalidChildIndex(){
         //given
-        INode<String> node = Node.createNode("root","d");
-        node = node.addChild(Node.createNode("child","c"));
+        INode<String> node = new Node.Builder("root","d").build();
+        node = node.addChild(new Node.Builder("child","c").build());
 
         //when
         assertEquals(Optional.empty(),node.getChildByIndex(1));
@@ -44,8 +44,8 @@ public class NodeTests {
     @Test
     public void itShouldGiveEmptyForInvalidNegativeChildIndex(){
         //given
-        INode<String> node = Node.createNode("root","d");
-        node = node.addChild(Node.createNode("child","c"));
+        INode<String> node = new Node.Builder("root","d").build();
+        node = node.addChild(new Node.Builder("child","c").build());
 
         //when
         assertEquals(Optional.empty(),node.getChildByIndex(-1));
@@ -56,7 +56,7 @@ public class NodeTests {
     @Test
     public void itShouldNotAllowEmptyChildListToAccess_ByName(){
         //given
-        INode<String> node = Node.createNode("root","root");
+        INode<String> node = new Node.Builder("root","root").build();
 
         //when
         assertEquals(Optional.empty(),node.getChildByID("someName"));
@@ -66,69 +66,69 @@ public class NodeTests {
     @Test
     public void itShouldCreateAGraphNodeHavingMultipleNodeChildren_index(){
         //given
-        INode<String> nodeDS = Node.createNode("root","r");
+        INode<String> nodeDS = new Node.Builder("root","r").build();
 
         //when
-        nodeDS = nodeDS.addChild(Node.createNode("1","c"));
-        nodeDS = nodeDS.addChild(Node.createNode("2","c"));
-        nodeDS = nodeDS.addChild(Node.createNode("3","c"));
+        nodeDS = nodeDS.addChild(new Node.Builder("1","c").build());
+        nodeDS = nodeDS.addChild(new Node.Builder("2","c").build());
+        nodeDS = nodeDS.addChild(new Node.Builder("3","c").build());
 
         //then
 
-        assertEquals(nodeDS.getChildByIndex(0).get(), Node.createNode("1","c"));
-        assertEquals(nodeDS.getChildByIndex(1).get(), Node.createNode("2","c"));
-        assertEquals(nodeDS.getChildByIndex(2).get(), Node.createNode("3","c"));
+        assertEquals(nodeDS.getChildByIndex(0).get(), new Node.Builder("1","c").build());
+        assertEquals(nodeDS.getChildByIndex(1).get(), new Node.Builder("2","c").build());
+        assertEquals(nodeDS.getChildByIndex(2).get(), new Node.Builder("3","c").build());
     }
 
     @Test
     public void itShouldCreateAGraphNodeHavingMultipleNodeChildren_name(){
         //given
-        INode<String> nodeDS = Node.createNode("root","root");
+        INode<String> nodeDS = new Node.Builder("root","root").build();
 
         //when
-        nodeDS = nodeDS.addChild(Node.createNode("1","c"));
-        nodeDS = nodeDS.addChild(Node.createNode("2","c"));
-        nodeDS = nodeDS.addChild(Node.createNode("3","c"));
-        System.out.println(nodeDS);
+        nodeDS = nodeDS.addChild(new Node.Builder("1","c").build());
+        nodeDS = nodeDS.addChild(new Node.Builder("2","c").build());
+        nodeDS = nodeDS.addChild(new Node.Builder("3","c").build());
+
         //then
 
-        assertEquals(nodeDS.getChildByID("1").get(), Node.createNode("1","c"));
-        assertEquals(nodeDS.getChildByID("2").get(), Node.createNode("2","c"));
-        assertEquals(nodeDS.getChildByID("3").get(), Node.createNode("3","c"));
+        assertEquals(nodeDS.getChildByID("1").get(), new Node.Builder("1","c").build());
+        assertEquals(nodeDS.getChildByID("2").get(), new Node.Builder("2","c").build());
+        assertEquals(nodeDS.getChildByID("3").get(), new Node.Builder("3","c").build());
     }
 
     @Test
     public void itShouldCheckContains_ForEmptyNodeChildren(){
         //given
-        INode<String> nodeDS = Node.createNode("root","root");
+        INode<String> nodeDS = new Node.Builder("root","root").build();
 
         //when
 
         //then
-        assertFalse(nodeDS.contains(Node.createNode("1","2")));
+        assertFalse(nodeDS.contains(new Node.Builder("1","2").build()));
     }
 
 
     @Test
     public void itShouldCheckContains_ForNonEmptyNodeChildren(){
         //given
-        INode<String> nodeDS = Node.createNode("root","root");
+        INode<String> nodeDS = new Node.Builder("root","root").build();
 
-        nodeDS = nodeDS.addChild(Node.createNode("1","c"));
-        nodeDS = nodeDS.addChild(Node.createNode("2","c"));
+        nodeDS = nodeDS.addChild(new Node.Builder("1","c").build());
+        nodeDS = nodeDS.addChild(new Node.Builder("2","c").build());
         //when
 
         //then
-        assertTrue(nodeDS.contains(Node.createNode("1","2")));
+        assertTrue(nodeDS.contains(new Node.Builder("1","2").build()));
     }
 
     @Test(expected = Node.NoDuplicateChildAllowed.class)
     public void itShouldNotAllowDuplicateNodeChild_IdentityID(){
         //given
-        INode<String> nodeDS = Node.createNode("root","root");
+        INode<String> nodeDS = new Node.Builder("root","root").build();
 
-        nodeDS = nodeDS.addChild(Node.createNode("1","c"));
-        nodeDS.addChild(Node.createNode("1","c"));
+        nodeDS = nodeDS.addChild(new Node.Builder("1","c").build());
+        nodeDS.addChild(new Node.Builder("1","c").build());
         //when
 
         //then
@@ -137,10 +137,10 @@ public class NodeTests {
     @Test(expected = Node.RootAndChildNodeSameNameException.class)
     public void itShouldNotAllowRootAndChildNameSame(){
         //given
-        INode<String> nodeDS = Node.createNode("root","root");
+        INode<String> nodeDS = new Node.Builder("root","root").build();
 
-        nodeDS = nodeDS.addChild(Node.createNode("root","c"));
-        nodeDS.addChild(Node.createNode("1","c"));
+        nodeDS = nodeDS.addChild(new Node.Builder("root","c").build());
+        nodeDS.addChild(new Node.Builder("1","c").build());
         //when
 
         //then
@@ -149,7 +149,7 @@ public class NodeTests {
     @Test
     public void itShouldGetNoLeafForNoLeafNodes(){
         //given
-        INode<String> root = Node.createNode("root","root");
+        INode<String> root = new Node.Builder("root","root").build();
 
         INode[] expected = new INode[]{};
         //when
@@ -163,13 +163,13 @@ public class NodeTests {
     @Test
     public void itShouldGetAllLeafNodes(){
         //given
-        INode<String> root = Node.createNode("root","root");
+        INode<String> root = new Node.Builder("root","root").build();
 
-        INode<String> child1 = Node.createNode("child1","child1");
-        INode<String> leaf1 = Node.createNode("leaf1","leaf1");
+        INode<String> child1 = new Node.Builder("child1","child1").build();
+        INode<String> leaf1 = new Node.Builder("leaf1","leaf1").build();
 
-        INode<String> child2 = Node.createNode("child2","child2");
-        INode<String> leaf2 = Node.createNode("leaf2","leaf2");
+        INode<String> child2 = new Node.Builder("child2","child2").build();
+        INode<String> leaf2 = new Node.Builder("leaf2","leaf2").build();
 
         child1 = child1.addChild(leaf1);
         child2 = child2.addChild(leaf2);
@@ -186,5 +186,19 @@ public class NodeTests {
 
     }
 
+    @Test
+    public void itShouldGiveTagAndDescriptionToNode(){
+        //given
+        INode<String> root = new Node.Builder("root","root")
+                                .tag("tag")
+                                .description("desc")
+                                .build();
+
+        //when
+
+        //then
+        assertEquals("tag",root.getTag());
+        assertEquals("desc",root.getDescription());
+    }
 
 }
