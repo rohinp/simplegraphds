@@ -201,4 +201,73 @@ public class NodeTests {
         assertEquals("desc",root.getDescription());
     }
 
+    @Test
+    public void itShouldGetEmptyChildListForNodeWithNoChildrenForAGivenTag(){
+        //given
+        INode<String> root = new Node.Builder("root","root").build();
+
+
+        INode[] expected = new INode[]{};
+        //when
+
+        List<INode<String>> actual = root.getChildByTag("test");
+
+        //then
+        assertArrayEquals(expected,actual.toArray());
+
+    }
+
+    @Test
+    public void itShouldGetEmptyChildListForUnknownTag(){
+        //given
+        INode<String> root = new Node.Builder("root","root").build();
+
+        INode<String> child1 = new Node.Builder("child1","child1").tag("relation").build();
+        INode<String> leaf1 = new Node.Builder("leaf1","leaf1").build();
+
+        INode<String> child2 = new Node.Builder("child2","child2").tag("relation").build();
+        INode<String> leaf2 = new Node.Builder("leaf2","leaf2").build();
+
+        child1 = child1.addChild(leaf1);
+        child2 = child2.addChild(leaf2);
+
+        root = root.addChild(child1);
+        root = root.addChild(child2);
+
+        INode[] expected = new INode[]{};
+        //when
+        List<INode<String>> actual = root.getChildByTag("test");
+
+        //then
+        assertArrayEquals(expected,actual.toArray());
+
+    }
+
+    @Test
+    public void itShouldGetAllChildNodesWithGivenTag(){
+        //given
+        INode<String> root = new Node.Builder("root","root").build();
+
+        INode<String> child1 = new Node.Builder("child1","child1").tag("relation").build();
+        INode<String> leaf1 = new Node.Builder("leaf1","leaf1").build();
+
+        INode<String> child2 = new Node.Builder("child2","child2").tag("relation").build();
+        INode<String> leaf2 = new Node.Builder("leaf2","leaf2").build();
+
+        child1 = child1.addChild(leaf1);
+        child2 = child2.addChild(leaf2);
+
+        root = root.addChild(child1);
+        root = root.addChild(child2);
+
+        INode[] expected = new INode[]{child1, child2};
+        //when
+        List<INode<String>> actual = root.getChildByTag("relation");
+
+        //then
+        assertArrayEquals(expected,actual.toArray());
+
+    }
+
+
 }

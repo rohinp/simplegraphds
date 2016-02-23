@@ -15,4 +15,6 @@ interface INode<T> {
     boolean haveChildren();
     String getTag();
     String getDescription();
+
+    List<INode<T>> getChildByTag(String tag);
 }

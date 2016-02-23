@@ -3,6 +3,7 @@ package org.rohin.graphds;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 class Node  {
 
@@ -84,6 +85,11 @@ class Node  {
         @Override
         public String getDescription() {
             return description;
+        }
+
+        @Override
+        public List<INode<T>> getChildByTag(String tag) {
+            return new ArrayList<>();
         }
 
         @Override
@@ -184,6 +190,11 @@ class Node  {
         @Override
         public String getDescription() {
             return description;
+        }
+
+        @Override
+        public List<INode<T>> getChildByTag(String tag) {
+            return children.stream().filter(e -> e.getTag().equals(tag)).collect(Collectors.toList());
         }
 
         private void loopForLeaf(INode<T> node){
