@@ -38,11 +38,6 @@ class Node  {
         }
 
         @Override
-        public Optional<INode<T>> getChildByIndex(int index) {
-            return Optional.empty();
-        }
-
-        @Override
         public Optional<INode<T>> getChildByID(String nodeId) {
             return Optional.empty();
         }
@@ -124,17 +119,6 @@ class Node  {
         }
 
         @Override
-        public Optional<INode<T>> getChildByIndex(int index) {
-            if (isInRange(index))
-                return Optional.of(children.get(index));
-            return Optional.empty();
-        }
-
-        private boolean isInRange(int index) {
-            return index >= 0 && children.size() > index;
-        }
-
-        @Override
         public Optional<INode<T>> getChildByID(String id) {
                 return children.stream().filter(e -> e.id().equals(id)).findFirst();
         }
@@ -194,7 +178,12 @@ class Node  {
 
         @Override
         public List<INode<T>> getChildByTag(String tag) {
-            return children.stream().filter(e -> e.getTag().equals(tag)).collect(Collectors.toList());
+
+            return children.stream()
+                            .map(e -> e.getChildByTag(tag))
+                            .flatMap(i -> i.stream())
+                            .filter(x -> x.getTag().equals(tag))
+                            .collect(Collectors.toList());
         }
 
         private void loopForLeaf(INode<T> node){
