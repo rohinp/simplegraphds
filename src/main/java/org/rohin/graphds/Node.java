@@ -3,6 +3,7 @@ package org.rohin.graphds;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 class Node  {
@@ -178,19 +179,23 @@ class Node  {
 
         @Override
         public List<INode<T>> getChildByTag(String tag) {
+            acc = new ArrayList<>();
+            traverse(this,tag);
+            return acc;
+        }
 
-            return children.stream()
-                            .map(e -> e.getChildByTag(tag))
-                            .flatMap(i -> i.stream())
-                            .filter(x -> x.getTag().equals(tag))
-                            .collect(Collectors.toList());
+        private void loop(Consumer<INode<T>> func, INode<T> node){
+            if(node.haveChildren())
+                node.getChildren().stream().forEach(func);
+        }
+        private void traverse(INode<T> node, String tag) {
+            if(node.getTag().equals(tag)) acc.add(node);
+            loop( e -> traverse(e,tag),node);
         }
 
         private void loopForLeaf(INode<T> node){
-            if(node.haveChildren())
-                node.getChildren().stream().forEach(this::loopForLeaf);
-            else
-                acc.add(node);
+            if(!node.haveChildren())acc.add(node);
+            loop(this::loopForLeaf,node);
         }
 
         @Override
