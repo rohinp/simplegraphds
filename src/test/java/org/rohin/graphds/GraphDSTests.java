@@ -15,7 +15,7 @@ public class GraphDSTests {
         //then
     }
 
-    @Test
+    /*@Test
     public void itShouldAllowToAddNodeAndChildNode(){
         //given
         IGraph<String> graph = Graph.createAcyclicGraph();
@@ -28,5 +28,5 @@ public class GraphDSTests {
         assertEquals(graph.getRoots().get(0).id(),"root1");
         assertEquals(graph.getChildOf("root1").get(0).id(),"child1");
 
-    }
+    }*/
 }
